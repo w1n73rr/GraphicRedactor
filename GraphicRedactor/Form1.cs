@@ -20,6 +20,7 @@ namespace GraphicRedactor
             map.SetPixel(-y + x0, x + y0, color);
             map.SetPixel(-y + x0, -x + y0, color);
         }
+        //Алгоритм Брезенхама рисования окружности
         public void bresenharmCircle(int x0, int y0, int R, Bitmap map)
         {
             int x = 0; int y = R; int d = 3 - 2 * R;
@@ -35,6 +36,7 @@ namespace GraphicRedactor
                 x++;
             }
         }
+        //Кривые Безье (параметрический способ)
         public void curveBesie(double[,] coordinates,double t, Bitmap map)
         {
             Graphics g = Graphics.FromImage(map);
@@ -61,6 +63,7 @@ namespace GraphicRedactor
             if (m == 1 || m == 0) return 1;
             else return m*factorial(m-1);
         }
+        //Естественный алгоритм рисования окружности
         public void myCircle(int x0,int y0,int r1,int r2,int omega1,int omega2,Bitmap map)
         {
             int steps = 12000;           
@@ -83,41 +86,7 @@ namespace GraphicRedactor
                 }
             }
         }
-
-        //Не модифицированный аалгоритм затравки
-        public void Zatravka_simple(int x, int y, Bitmap map, Color color, int k)
-        {
-            if (k < 50000)
-            {
-                Color backcolor = map.GetPixel(x, y);
-                map.SetPixel(x, y, color);
-                //закраска вверх
-                if ((y + 1 <= map.Height) && (map.GetPixel(x, y + 1) == backcolor))
-                {
-                    k++;
-                    Zatravka_simple(x, y + 1, map, color, k);
-                }
-                //закраска вправо
-                if ((x + 1 <= map.Height) && (map.GetPixel(x + 1, y) == backcolor))
-                {
-                    k++;
-                    Zatravka_simple(x + 1, y, map, color, k++);
-                }
-                //закраска вниз при условии того, что пиксел ниже не раскрашен
-                if ((y - 1 >= 0) && (map.GetPixel(x, y - 1) == backcolor))
-                {
-                    k++;
-                    Zatravka_simple(x, y - 1, map, color, k++);
-                }
-                //закраска влево при условии того, что пиксел левее не раскрашен
-                if ((x - 1 >= 0) && (map.GetPixel(x - 1, y) == backcolor))
-                {
-                    k++;
-                    Zatravka_simple(x - 1, y, map, color, k++);
-                }
-            }
-        }
-
+        //Модифицированный алгоритм затравки
         public void fill(int x,int y,Bitmap map,Color color) 
         {
             Color backcolor = map.GetPixel(x,y);
@@ -147,7 +116,7 @@ namespace GraphicRedactor
                 }
             }            
         }
-
+        //Модифицированный алгоритм затравки для закраски узором
         public void fill(int x ,int y, Color[,] pattern,Bitmap map)
         {
             Color backcolor = map.GetPixel(x, y);           
@@ -178,6 +147,7 @@ namespace GraphicRedactor
                 }
             }
         }
+        //Не модифицированный алгоритм затравки
         public void fillZatravka(int x, int y, Bitmap map, Color color, int k)
         {
             if (k < 50000)
@@ -226,12 +196,7 @@ namespace GraphicRedactor
             fill(335, 220, pattern,map);
             fillZatravka(335,226, map, Color.Yellow, 0);
             fill(400, 226, map, Color.BlueViolet);
-            Zatravka_simple(350,226,map, Color.Gray,0);
-            Zatravka_simple(320, 226, map, Color.Pink, 0);
-
             pictureBox1.Image = map;
-
-
         }
     }
 }
